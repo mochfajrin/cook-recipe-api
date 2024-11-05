@@ -8,14 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-       Schema::create("ingredients", function(Blueprint $table) {
-        $table->id()->primary()->nullable(false);
-        $table->unsignedBigInteger("recipe_id")->nullable(false);
-        $table->string("name");
-        $table->unsignedBigInteger("timestamp");
+        Schema::create("ingredients", function (Blueprint $table) {
+            $table->id()->unique();
+            $table->unsignedBigInteger("recipe_id");
+            $table->string("name");
+            $table->unsignedBigInteger("created_at");
 
-        $table->foreign("recipe_id")->on("recipes")->references("id");
-       });
+            $table->foreign("recipe_id")->on("recipes")->references("id");
+        });
     }
 
     public function down(): void

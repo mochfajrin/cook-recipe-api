@@ -9,9 +9,9 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create("recipes", function(Blueprint $table) {
+        Schema::create("recipes", function (Blueprint $table) {
             $table->id()->unique();
-            $table->string("user_id", 36);
+            $table->unsignedBigInteger("user_id");
             $table->string("title", 100);
             $table->string("summary", 1000)->nullable();
             $table->string("portion", 1000)->nullable();
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean("is_released")->default(false);
             $table->string("header_image", 150)->nullable();
             $table->string("header_image_id", 24)->nullable();
-            $table->unsignedBigInteger("timestamp");
+            $table->unsignedFloat("created_at")->default(round(microtime(true) * 1000));
 
             $table->foreign("user_id")->on("users")->references("id");
         });
