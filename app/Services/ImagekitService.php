@@ -7,18 +7,18 @@ use ImageKit\ImageKit;
 
 class ImagekitService
 {
-
+    public function __construct(
+        private readonly ImageKit $imagekit
+    ) {
+    }
     function uploadImage($image)
     {
-        $imagekit = new ImageKit(env("IMAGEKIT_PUBLIC_KEY"), env("IMAGEKIT_PRIVATE_KEY"), env("IMAGEKIT_URL_ENDPOINT"));
         $currentTime = round(microtime(true) * 1000);
-        $uploaded = $imagekit->upload([
-            "file" => $image,
+        $uploaded = $this->imagekit->upload([
+            "file" => fopen($image, "r"),
             "folder" => "/cook-recipe/user_profile",
             "fileName" => "IMG" . $currentTime . "." . $image->extension(),
         ]);
-
-        var_dump($uploaded);
         return $uploaded;
     }
 }

@@ -18,6 +18,7 @@ class User extends Authenticatable
         "name",
         "email",
         "address",
+        "image",
         "about_me",
     ];
 }
