@@ -19,6 +19,15 @@ class User extends Authenticatable
         "email",
         "address",
         "image",
+        "image_id",
         "about_me",
     ];
+    public function recipes()
+    {
+        return $this->hasMany(Recipe::class);
+    }
+    public function recipeCollection()
+    {
+        return $this->hasMany(RecipeCollection::class);
+    }
 }

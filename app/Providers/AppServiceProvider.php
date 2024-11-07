@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Services\ImagekitService;
+use App\Services\RecipeService;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -26,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(UserService::class, function (Application $app) {
             $imagekitService = $app->make(ImagekitService::class);
             return new UserService($imagekitService);
+        });
+        $this->app->singleton(RecipeService::class, function (Application $app) {
+            $imagekitService = $app->make(ImagekitService::class);
+            return new RecipeService($imagekitService);
         });
     }
     public function boot(): void
