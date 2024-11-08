@@ -24,6 +24,8 @@ Route::prefix("v1")->group(function () {
         Route::prefix("recipes")->controller(RecipeController::class)->group(function () {
             Route::post("/", "create");
             Route::get("/{id}", "get")->where("id", "[0-9]+");
+            Route::patch("/{id}", "update")->where("id", "[0-9]+");
+            Route::delete("/{id}", "delete")->where("id", "[0-9]+");
         });
     });
 });

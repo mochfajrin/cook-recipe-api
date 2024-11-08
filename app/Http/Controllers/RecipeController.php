@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Recipe\RecipeCreateRequest;
+use App\Http\Requests\Recipe\RecipeUpdateRequest;
 use App\Http\Resources\RecipeResponse;
 use App\Services\RecipeService;
 use Illuminate\Http\Request;
@@ -17,10 +18,19 @@ class RecipeController extends Controller
         $recipe = $this->recipeService->createRecipe($request);
         return new RecipeResponse($recipe);
     }
-    public function get(int $id)
+    public function get(int $id, Request $request)
     {
-        $recipe = $this->recipeService->get($id);
+        $recipe = $this->recipeService->get($id, $request->user()->id);
         return new RecipeResponse($recipe);
     }
-
+    public function update(int $id, RecipeUpdateRequest $request)
+    {
+        $recipe = $this->recipeService->update($id, $request);
+        return new RecipeResponse($recipe);
+    }
+    public function delete(int $id, Request $request)
+    {
+        $this->recipeService->delete($id, $request->user()->id);
+        return response()->json(["message" => "success"], 200);
+    }
 }

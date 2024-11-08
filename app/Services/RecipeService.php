@@ -19,7 +19,7 @@ class RecipeService
         $data = $request->validated();
         $image = $request->file("header_image");
         if ($image) {
-            $uploaded = $this->imagekitService->uploadImage($image);
+            $uploaded = $this->imagekitService->uploadProfilePict($image);
             $data["header_image"] = $uploaded->result->url;
             $data["header_image_id"] = $uploaded->result->fileId;
         }
@@ -28,9 +28,10 @@ class RecipeService
 
         return $recipe;
     }
-    public function get(int $id)
+    public function get(int $id, int $userId)
     {
-        $recipe = Recipe::find($id);
+        $user = User::find($userId)->first();
+        $recipe = Recipe::where("id", $id)->where("user_id", $user->id)->first();
         if (!$recipe) {
             throw new HttpResponseException(response(
                 [
@@ -43,7 +44,39 @@ class RecipeService
     }
     public function update(int $id, RecipeUpdateRequest $request)
     {
-        $recipe = $this->get($id);
+        $recipe = $this->get($id, $request->user()->id);
         $data = $request->validated();
+        $image = $request->file("header_image");
+        if ($image) {
+            $uploaded = $this->imagekitService->updateRecipePict($image, $recipe->header_image_id);
+            $recipe->header_image = $uploaded->result->url;
+            $recipe->header_image_id = $uploaded->result->fileId;
+        }
+        if (isset($data["title"])) {
+            $recipe->title = $data["title"];
+        }
+        if (isset($data["summary"])) {
+            $recipe->summary = $data["summary"];
+        }
+        if (isset($data["portion"])) {
+            $recipe->portion = $data["portion"];
+        }
+        if (isset($data["prep_time"])) {
+            $recipe->prep_time = $data["prep_time"];
+        }
+        if (isset($data["visibility"])) {
+            $recipe->visibility = $data["visibility"];
+        }
+        if (isset($data["private"])) {
+            $recipe->private = $data["private"];
+        }
+        $recipe->save();
+
+        return $recipe;
+    }
+    public function delete(int $id, int $userId)
+    {
+        $this->get($id, $userId)->delete();
+        return true;
     }
 }

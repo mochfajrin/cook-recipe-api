@@ -24,7 +24,7 @@ class UserService
         $data["password"] = Hash::make($data["password"]);
         $image = $request->file("image");
         if ($image) {
-            $uploaded = $this->imagekitService->uploadImage($image);
+            $uploaded = $this->imagekitService->uploadProfilePict($image);
             $data["image"] = $uploaded->result->url;
             $data["image_id"] = $uploaded->result->fileId;
         }
@@ -64,7 +64,7 @@ class UserService
         $image = $request->file("image");
 
         if ($image) {
-            $upload = $this->imagekitService->updateImage($image, $user->file_id);
+            $upload = $this->imagekitService->updateProfilePict($image, $user->file_id);
             $user->image = $upload->result->url;
             $user->image_id = $upload->result->fileId;
         }

@@ -23,7 +23,7 @@ class RecipeResponse extends JsonResource
                 "summary" => $this->summary,
                 "portion" => $this->portion,
                 "prep_time" => $this->prep_time,
-                "vicibility" => $this->vicibility,
+                "vicibility" => $this->whenNotNull($this->visibility),
                 "header_image" => $this->header_image,
             ]
         ];
