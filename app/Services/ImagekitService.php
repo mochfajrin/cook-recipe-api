@@ -35,29 +35,29 @@ class ImagekitService
         $path = "profiles";
         return $this->uploadImage($imagepath, $path);
     }
-    function updateProfilePict(UploadedFile $imagepath, string $fileId)
+    function updateProfilePict(UploadedFile $imagepath, ?string $fileId)
     {
         $path = "profiles";
-        return $this->uploadImage($imagepath, $path);
+        return $this->updateImage($imagepath, $fileId, $path);
     }
     function uploadRecipePict(UploadedFile $imagepath)
     {
         $path = "recipes";
         return $this->uploadImage($imagepath, $path);
     }
-    function updateRecipePict(UploadedFile $imagepath, string $fileId)
+    function updateRecipePict(UploadedFile $imagepath, ?string $fileId)
     {
-        $path = "profiles";
-        return $this->uploadImage($imagepath, $path);
+        $path = "recipes";
+        return $this->updateImage($imagepath, $fileId, $path);
     }
     function uploadStepPict(UploadedFile $imagepath)
     {
         $path = "steps";
         return $this->uploadImage($imagepath, $path);
     }
-    function updateStepPict(UploadedFile $imagepath, string $fileId)
+    function updateStepPict(UploadedFile $imagepath, ?string $fileId)
     {
         $path = "steps";
-        return $this->uploadImage($imagepath, $path);
+        return $this->updateImage($imagepath, $fileId, $path);
     }
 }

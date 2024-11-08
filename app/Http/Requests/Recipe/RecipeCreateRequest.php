@@ -21,6 +21,7 @@ class RecipeCreateRequest extends FormRequest
             "summary" => "string|max:1000",
             "portion" => "string|max:100",
             "prep_time" => "string|max:50",
+            "header_image" => "mimes:png,jpg,jpeg|max:5000",
         ];
     }
     public function failedValidation(Validator $validator)

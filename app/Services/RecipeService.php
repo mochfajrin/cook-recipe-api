@@ -8,13 +8,14 @@ use App\Models\Recipe;
 use App\Models\User;
 use App\Services\ImagekitService;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 
 class RecipeService
 {
     public function __construct(private readonly ImagekitService $imagekitService)
     {
     }
-    public function createRecipe(RecipeCreateRequest $request)
+    public function create(RecipeCreateRequest $request)
     {
         $data = $request->validated();
         $image = $request->file("header_image");
@@ -78,5 +79,21 @@ class RecipeService
     {
         $this->get($id, $userId)->delete();
         return true;
+    }
+    public function search(Request $request)
+    {
+        $page = $request->input("page", 1);
+        $size = $request->input("size", 10);
+        $search = $request->input("search");
+
+        $contacts = Recipe::where("user_id", $request->user()->id);
+
+        if ($search) {
+            $contacts = $contacts->where("title", "ilike", "%{$search}%");
+        }
+
+        $contacts = $contacts->paginate(perPage: $size, page: $page);
+
+        return $contacts;
     }
 }

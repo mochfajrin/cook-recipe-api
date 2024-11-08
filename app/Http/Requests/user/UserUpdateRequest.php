@@ -20,7 +20,7 @@ class UserUpdateRequest extends FormRequest
             "password" => "string|min:8|max:100",
             "address" => "string|min:1|max:100",
             "about_me" => "string|min:1|max:100",
-            "image" => "mimes:png,jpg,jpeg|max:100",
+            "image" => "mimes:png,jpg,jpeg|max:5000",
         ];
     }
     public function failedValidation(Validator $validator)

@@ -22,6 +22,7 @@ Route::prefix("v1")->group(function () {
             Route::delete("/logout", "logout");
         });
         Route::prefix("recipes")->controller(RecipeController::class)->group(function () {
+            Route::get("/", "search");
             Route::post("/", "create");
             Route::get("/{id}", "get")->where("id", "[0-9]+");
             Route::patch("/{id}", "update")->where("id", "[0-9]+");

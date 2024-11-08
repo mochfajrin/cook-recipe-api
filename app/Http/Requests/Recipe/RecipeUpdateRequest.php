@@ -11,9 +11,7 @@ use Illuminate\Validation\Rule;
 
 class RecipeUpdateRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+
     public function authorize(): bool
     {
         return $this->user() !== null;
@@ -26,6 +24,7 @@ class RecipeUpdateRequest extends FormRequest
             "portion" => "string|max:100",
             "prep_time" => "string|max:50",
             "visibility" => [Rule::enum(RecipeVisibility::class)],
+            "header_image" => "mimes:png,jpg,jpeg|max:5000|",
         ];
     }
     public function failedValidation(Validator $validator)
