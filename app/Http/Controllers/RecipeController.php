@@ -19,9 +19,10 @@ class RecipeController extends Controller
         $recipe = $this->recipeService->create($request);
         return new RecipeResponse($recipe);
     }
-    public function get(int $id, Request $request)
+    public function get(int $id)
     {
-        $recipe = $this->recipeService->get($id, $request->user()->id);
+        $recipe = $this->recipeService->getOne($id);
+
         return new RecipeResponse($recipe);
     }
     public function update(int $id, RecipeUpdateRequest $request)
@@ -34,9 +35,9 @@ class RecipeController extends Controller
         $this->recipeService->delete($id, $request->user()->id);
         return response()->json(["message" => "success"], 200);
     }
-    public function search(Request $request)
+    public function search(bool $visibility, Request $request)
     {
-        $recipes = $this->recipeService->search($request);
+        $recipes = $this->recipeService->search($request, $visibility);
         return new RecipeCollection($recipes);
     }
 }

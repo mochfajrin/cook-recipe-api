@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string("summary", 1000)->nullable();
             $table->string("portion", 1000)->nullable();
             $table->string("prep_time", 50)->nullable();
-            $table->enum("visibility", ["PUBLIC", "PRIVATE"])->default("PRIVATE");
+            $table->boolean("is_public")->default(false);
             $table->string("header_image", 150)->nullable();
             $table->string("header_image_id", 24)->nullable();
             $table->unsignedFloat("created_at")->default(round(microtime(true) * 1000));

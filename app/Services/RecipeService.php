@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\RecipeVisibility;
 use App\Http\Requests\Recipe\RecipeCreateRequest;
 use App\Http\Requests\Recipe\RecipeUpdateRequest;
 use App\Models\Recipe;
@@ -29,10 +30,15 @@ class RecipeService
 
         return $recipe;
     }
-    public function get(int $id, int $userId)
+    public function getOne(int $id, ?int $userId)
     {
-        $user = User::find($userId)->first();
-        $recipe = Recipe::where("id", $id)->where("user_id", $user->id)->first();
+        $recipe = null;
+        if ($userId) {
+            $user = User::find($userId);
+            $recipe = Recipe::where("id", $id)->where("user_id", $user->id)->first();
+        } else {
+            $recipe = Recipe::where("id", $id)->where("is_public", true)->first();
+        }
         if (!$recipe) {
             throw new HttpResponseException(response(
                 [
@@ -43,9 +49,9 @@ class RecipeService
         }
         return $recipe;
     }
-    public function update(int $id, RecipeUpdateRequest $request)
+    public function update(int $id, RecipeUpdateRequest $request): Recipe
     {
-        $recipe = $this->get($id, $request->user()->id);
+        $recipe = $this->getOne($id, $request->user()->id);
         $data = $request->validated();
         $image = $request->file("header_image");
         if ($image) {
@@ -65,8 +71,8 @@ class RecipeService
         if (isset($data["prep_time"])) {
             $recipe->prep_time = $data["prep_time"];
         }
-        if (isset($data["visibility"])) {
-            $recipe->visibility = $data["visibility"];
+        if (isset($data["is_public"])) {
+            $recipe->visibility = $data["is_public"];
         }
         if (isset($data["private"])) {
             $recipe->private = $data["private"];
@@ -77,23 +83,27 @@ class RecipeService
     }
     public function delete(int $id, int $userId)
     {
-        $this->get($id, $userId)->delete();
+        $this->getOne($id, $userId)->delete();
         return true;
     }
-    public function search(Request $request)
-    {
+    public function search(
+        Request $request,
+        $isPublic = true
+    ) {
         $page = $request->input("page", 1);
         $size = $request->input("size", 10);
         $search = $request->input("search");
 
-        $contacts = Recipe::where("user_id", $request->user()->id);
+        if (!$isPublic === false) {
+            $contacts = Recipe::where("user_id", $request->user()->id);
+        }
+        $contacts = Recipe::where("is_public", false);
 
         if ($search) {
             $contacts = $contacts->where("title", "ilike", "%{$search}%");
         }
 
         $contacts = $contacts->paginate(perPage: $size, page: $page);
-
         return $contacts;
     }
 }

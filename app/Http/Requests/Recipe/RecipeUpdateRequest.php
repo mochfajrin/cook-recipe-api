@@ -14,7 +14,9 @@ class RecipeUpdateRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return $this->user() !== null;
+        $userId = $this->user()->id;
+        $recipe = Recipe::where("user_id", $userId)->count();
+        return $recipe !== 0;
     }
     public function rules(): array
     {

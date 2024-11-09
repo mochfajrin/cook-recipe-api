@@ -18,8 +18,7 @@ class Recipe extends Model
         "summary",
         "portion",
         "prep_time",
-        "visibility",
-        "private",
+        "is_public",
         "header_image",
         "header_image_id",
     ];

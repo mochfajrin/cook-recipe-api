@@ -28,8 +28,6 @@ class UserController extends Controller
     public function get(Request $request)
     {
         $user = $request->user();
-        // $id = $request->user()->id;
-        // $user = $this->userService->get($id);
         return response()->json(new UserResponse($user))->setStatusCode(200);
     }
     public function update(UserUpdateRequest $request)
