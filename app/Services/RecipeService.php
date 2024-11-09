@@ -72,7 +72,7 @@ class RecipeService
             $recipe->prep_time = $data["prep_time"];
         }
         if (isset($data["is_public"])) {
-            $recipe->is_public = $data["is_public"] === "1" || 1 ? true : false;
+            $recipe->is_public = $data["is_public"] === "1" || $data["is_public"] === 1 ? true : false;
         }
         $recipe->save();
 
@@ -85,15 +85,24 @@ class RecipeService
     }
     public function search(
         Request $request,
+        ?int $userId
     ) {
         $page = $request->input("page", 1);
         $size = $request->input("size", 10);
         $search = $request->input("search");
+        $isPublic = $request->input("is_public");
 
-        $contacts = Recipe::where("is_public", true);
-
+        $contacts = null;
+        if ($userId) {
+            $contacts = Recipe::where("user_id", $userId);
+        } else {
+            $contacts = Recipe::where("is_public", true);
+        }
         if ($search) {
             $contacts = $contacts->where("title", "ilike", "%{$search}%");
+        }
+        if ($isPublic) {
+            $contacts = $contacts->where("is_public", $isPublic);
         }
 
         $contacts = $contacts->paginate(perPage: $size, page: $page);

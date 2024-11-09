@@ -37,7 +37,17 @@ class RecipeController extends Controller
     }
     public function search(Request $request)
     {
-        $recipes = $this->recipeService->search($request);
+        $recipes = $this->recipeService->search($request, null);
         return new RecipeCollection($recipes);
+    }
+    public function getPrivateRecipes(Request $request)
+    {
+        $recipes = $this->recipeService->search($request, $request->user()->id);
+        return new RecipeCollection($recipes);
+    }
+    public function getOnePrivateRecipe(int $id, Request $request)
+    {
+        $recipes = $this->recipeService->getOne($id, $request->user()->id);
+        return new RecipeResponse($recipes);
     }
 }
