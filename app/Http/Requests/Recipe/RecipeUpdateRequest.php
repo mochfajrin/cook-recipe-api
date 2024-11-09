@@ -25,7 +25,7 @@ class RecipeUpdateRequest extends FormRequest
             "summary" => "string|max:1000",
             "portion" => "string|max:100",
             "prep_time" => "string|max:50",
-            "visibility" => [Rule::enum(RecipeVisibility::class)],
+            "is_public" => "boolean",
             "header_image" => "mimes:png,jpg,jpeg|max:5000|",
         ];
     }

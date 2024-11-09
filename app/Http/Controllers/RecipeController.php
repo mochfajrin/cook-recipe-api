@@ -21,7 +21,7 @@ class RecipeController extends Controller
     }
     public function get(int $id)
     {
-        $recipe = $this->recipeService->getOne($id);
+        $recipe = $this->recipeService->getOne($id, null);
 
         return new RecipeResponse($recipe);
     }
@@ -35,9 +35,9 @@ class RecipeController extends Controller
         $this->recipeService->delete($id, $request->user()->id);
         return response()->json(["message" => "success"], 200);
     }
-    public function search(bool $visibility, Request $request)
+    public function search(Request $request)
     {
-        $recipes = $this->recipeService->search($request, $visibility);
+        $recipes = $this->recipeService->search($request);
         return new RecipeCollection($recipes);
     }
 }
