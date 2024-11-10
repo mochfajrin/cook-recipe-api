@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -28,10 +29,15 @@ Route::prefix("v1")->group(function () {
             Route::get("/recipes", "getPrivateRecipes")->where("id", "^[0-9]+$");
             Route::get("recipes/{id}", "getOnePrivateRecipe")->where("id", "^[0-9]+$");
         });
-        Route::prefix("recipes")->controller(RecipeController::class)->group(function () {
-            Route::post("/", "create");
-            Route::patch("/{id}", "update")->where("id", "^[0-9]+$");
-            Route::delete("/{id}", "delete")->where("id", "^[0-9]+$");
+        Route::prefix("recipes")->group(function () {
+            Route::controller(RecipeController::class)->group(function () {
+                Route::post("/", "create");
+                Route::patch("/{id}", "update")->where("id", "^[0-9]+$");
+                Route::delete("/{id}", "delete")->where("id", "^[0-9]+$");
+            });
+            Route::controller(IngredientController::class)->group(function () {
+                Route::post("/{recipeId}/ingredients", "create")->where("recipeId", "^[0-9]+$");
+            });
         });
     });
 });

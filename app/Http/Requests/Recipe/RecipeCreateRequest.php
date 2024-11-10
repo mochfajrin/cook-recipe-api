@@ -27,7 +27,7 @@ class RecipeCreateRequest extends FormRequest
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response([
-            "errors" => $validator->errors()
+            "errors" => $validator->getMessageBag()
         ], 400));
     }
 }

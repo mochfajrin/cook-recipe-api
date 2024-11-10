@@ -11,10 +11,14 @@ class Ingredient extends Model
 
     protected $table = "ingredients";
     protected $primaryKey = "id";
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $fillable = [
         "recipe_id",
         "name",
     ];
+    public function recipe()
+    {
+        return $this->belongsTo(Recipe::class);
+    }
 }

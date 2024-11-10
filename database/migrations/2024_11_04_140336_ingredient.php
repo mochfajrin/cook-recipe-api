@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id()->unique();
             $table->unsignedBigInteger("recipe_id");
             $table->string("name", 100);
-            $table->unsignedBigInteger("created_at");
+            $table->unsignedBigInteger("created_at")->default(round(microtime(true) * 1000));
 
             $table->foreign("recipe_id")->on("recipes")->references("id");
         });
