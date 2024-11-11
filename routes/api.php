@@ -15,7 +15,7 @@ Route::prefix("v1")->group(function () {
     });
     Route::prefix("recipes")->controller(RecipeController::class)->group(function () {
         Route::get("/", "search");
-        Route::get("/{id}", "get")->where("id", "^[0-9]+$");
+        Route::get("/{id}", "get");
     });
     // private api
 
@@ -26,18 +26,19 @@ Route::prefix("v1")->group(function () {
             Route::delete("/logout", "logout");
         });
         Route::prefix("users")->controller(RecipeController::class)->group(function () {
-            Route::get("/recipes", "getPrivateRecipes")->where("id", "^[0-9]+$");
-            Route::get("recipes/{id}", "getOnePrivateRecipe")->where("id", "^[0-9]+$");
+            Route::get("/recipes", "getPrivateRecipes");
+            Route::get("recipes/{id}", "getOnePrivateRecipe");
         });
         Route::prefix("recipes")->group(function () {
             Route::controller(RecipeController::class)->group(function () {
                 Route::post("/", "create");
-                Route::patch("/{id}", "update")->where("id", "^[0-9]+$");
-                Route::delete("/{id}", "delete")->where("id", "^[0-9]+$");
+                Route::patch("/{id}", "update");
+                Route::delete("/{id}", "delete");
             });
             Route::controller(IngredientController::class)->group(function () {
-                Route::post("/{recipeId}/ingredients", "create")->where("recipeId", "^[0-9]+$");
-                Route::patch("/{recipeId}/ingredients", "update")->where("recipeId", "^[0-9]+$");
+                Route::post("/{recipeId}/ingredients", "create");
+                Route::patch("/{recipeId}/ingredients", "update");
+                Route::delete("/{recipeId}/ingredients/{ingredientId}", "delete");
             });
         });
     });

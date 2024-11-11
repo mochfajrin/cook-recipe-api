@@ -6,6 +6,7 @@ use App\Services\ImagekitService;
 use App\Services\RecipeService;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use ImageKit\ImageKit;
 
@@ -35,5 +36,10 @@ class AppServiceProvider extends ServiceProvider
     }
     public function boot(): void
     {
+        Route::pattern("userId", "[0-9]+");
+        Route::pattern("recipeId", "[0-9]+");
+        Route::pattern("ingredientId", "[0-9]+");
+        Route::pattern("instructionId", "[0-9]+");
+        Route::pattern("recipeCollectionId", "[0-9]+");
     }
 }

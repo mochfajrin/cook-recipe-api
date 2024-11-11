@@ -20,9 +20,9 @@ class IngredientService
         }
         return $recipe;
     }
-    public function isIngredientExist(int $ingredientId): Ingredient
+    public function isIngredientExist(int $recipeId, int $ingredientId): Ingredient
     {
-        $ingredient = Ingredient::where("id", $ingredientId)->first();
+        $ingredient = Ingredient::where("recipe_id", $recipeId)->where("id", $ingredientId)->first();
         if (!$ingredient) {
             throw new HttpResponseException(response([
                 "errors" => ["Ingredient not found"]
@@ -45,5 +45,10 @@ class IngredientService
         $recipe->ingredients()->upsert($data, "id");
         $ingredients = $recipe->ingredients()->orderBy("id", "ASC")->get(["id", "recipe_id", "name"]);
         return $ingredients;
+    }
+    public function delete(int $recipeId, int $ingredientId)
+    {
+        $this->isIngredientExist($recipeId, $ingredientId)->delete();
+        return true;
     }
 }

@@ -24,4 +24,9 @@ class IngredientController extends Controller
         $ingredients = $this->ingredientService->update($recipeId, $request);
         return response()->json($ingredients)->setStatusCode(200);
     }
+    public function delete(int $recipeId, int $ingredientId)
+    {
+        $this->ingredientService->delete($recipeId, $ingredientId);
+        return response()->json(["message" => "success"]);
+    }
 }
