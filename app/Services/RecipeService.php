@@ -49,11 +49,22 @@ class RecipeService
         }
         return $recipe;
     }
+    public function isRecipeExist(int $recipeId, int $userId): Recipe
+    {
+        $recipe = Recipe::where("id", $recipeId)->where("user_id", $userId)->first();
+        if (!$recipeId) {
+            throw new HttpResponseException(response([
+                "errors" => ["Recipe not found"]
+            ], 404));
+        }
+        return $recipe;
+    }
     public function update(int $id, RecipeUpdateRequest $request): Recipe
     {
-        $recipe = $this->getOne($id, $request->user()->id);
+        $recipe = $this->isRecipeExist($id, $request->user()->id);
         $data = $request->validated();
         $image = $request->file("header_image");
+
         if ($image) {
             $uploaded = $this->imagekitService->updateRecipePict($image, $recipe->header_image_id);
             $recipe->header_image = $uploaded->result->url;
@@ -75,12 +86,12 @@ class RecipeService
             $recipe->is_public = $data["is_public"] === "1" || $data["is_public"] === 1 ? true : false;
         }
         $recipe->save();
-
         return $recipe;
     }
     public function delete(int $id, int $userId)
     {
-        $this->getOne($id, $userId)->delete();
+        $recipe = $this->isRecipeExist($id, $userId);
+        $recipe->ingredients()->delete();
         return true;
     }
     public function search(

@@ -37,6 +37,7 @@ Route::prefix("v1")->group(function () {
             });
             Route::controller(IngredientController::class)->group(function () {
                 Route::post("/{recipeId}/ingredients", "create")->where("recipeId", "^[0-9]+$");
+                Route::patch("/{recipeId}/ingredients", "update")->where("recipeId", "^[0-9]+$");
             });
         });
     });
