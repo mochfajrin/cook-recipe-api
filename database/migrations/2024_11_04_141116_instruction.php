@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id()->unique();
             $table->unsignedBigInteger("recipe_id");
             $table->string("step");
-            $table->smallInteger("order_step");
+            $table->smallInteger("step_order");
             $table->string("image")->nullable();
             $table->string("image_id")->nullable();
             $table->unsignedBigInteger("created_at")->default(round(microtime(true) * 1000));
