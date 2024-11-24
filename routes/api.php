@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,11 @@ Route::prefix("v1")->group(function () {
                 Route::post("/{recipeId}/ingredients", "create");
                 Route::patch("/{recipeId}/ingredients", "update");
                 Route::delete("/{recipeId}/ingredients/{ingredientId}", "delete");
+            });
+            Route::controller(InstructionController::class)->group(function () {
+                Route::post("/{recipeId}/instructions", "create");
+                Route::patch("/{recipeId}/instructions", "update");
+                Route::delete("/{recipeId}/instructions/{instructionsId}", "delete");
             });
         });
     });

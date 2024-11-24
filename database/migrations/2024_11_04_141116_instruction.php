@@ -10,10 +10,10 @@ return new class extends Migration {
         Schema::create("instructions", function (Blueprint $table) {
             $table->id()->unique();
             $table->unsignedBigInteger("recipe_id");
-            $table->string("step");
+            $table->string("step", 1000);
             $table->smallInteger("step_order");
-            $table->string("image")->nullable();
-            $table->string("image_id")->nullable();
+            $table->string("image", 150)->nullable();
+            $table->string("image_id", 50)->nullable();
             $table->unsignedBigInteger("created_at")->default(round(microtime(true) * 1000));
 
             $table->foreign("recipe_id")->on("recipes")->references("id");

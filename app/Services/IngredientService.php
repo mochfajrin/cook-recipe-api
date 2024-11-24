@@ -20,7 +20,7 @@ class IngredientService
         }
         return $recipe;
     }
-    public function isIngredientExist(int $recipeId, int $ingredientId): Ingredient
+    public function getOneIngredient(int $recipeId, int $ingredientId): Ingredient
     {
         $ingredient = Ingredient::where("recipe_id", $recipeId)->where("id", $ingredientId)->first();
         if (!$ingredient) {
@@ -48,7 +48,7 @@ class IngredientService
     }
     public function delete(int $recipeId, int $ingredientId)
     {
-        $this->isIngredientExist($recipeId, $ingredientId)->delete();
+        $this->getOneIngredient($recipeId, $ingredientId)->delete();
         return true;
     }
 }

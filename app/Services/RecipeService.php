@@ -49,7 +49,7 @@ class RecipeService
         }
         return $recipe;
     }
-    public function isRecipeExist(int $recipeId, int $userId): Recipe
+    public function getOneRecipe(int $recipeId, int $userId): Recipe
     {
         $recipe = Recipe::where("id", $recipeId)->where("user_id", $userId)->first();
         if (!$recipeId) {
@@ -61,7 +61,7 @@ class RecipeService
     }
     public function update(int $id, RecipeUpdateRequest $request): Recipe
     {
-        $recipe = $this->isRecipeExist($id, $request->user()->id);
+        $recipe = $this->getOneRecipe($id, $request->user()->id);
         $data = $request->validated();
         $image = $request->file("header_image");
 
@@ -90,7 +90,7 @@ class RecipeService
     }
     public function delete(int $id, int $userId)
     {
-        $recipe = $this->isRecipeExist($id, $userId);
+        $recipe = $this->getOneRecipe($id, $userId);
         $recipe->ingredients()->delete();
         return true;
     }
