@@ -25,7 +25,8 @@ class RecipeResponse extends JsonResource
                 "prep_time" => $this->prep_time,
                 "is_public" => $this->whenNotNull($this->is_public),
                 "header_image" => $this->header_image,
-                "ingredient" => $this->ingredients()->orderBy("id", "ASC")->get(["id", "recipe_id", "name"])
+                "ingredient" => $this->ingredients()->orderBy("id", "ASC")->get(["id", "name"]),
+                "instructions" => $this->instructions()->orderBy("step_order", "ASC")->get(["id", "step_order", "step"]),
             ]
         ];
     }
