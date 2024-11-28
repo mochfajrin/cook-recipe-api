@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\InstructionController;
+use App\Http\Controllers\RecipeCollectionController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,7 @@ Route::prefix("v1")->group(function () {
         Route::get("/", "search");
         Route::get("/{id}", "get");
     });
+
     // private api
 
     Route::middleware("auth:sanctum")->group(function () {
@@ -46,6 +48,11 @@ Route::prefix("v1")->group(function () {
                 Route::patch("/{recipeId}/instructions", "update");
                 Route::delete("/{recipeId}/instructions/{instructionsId}", "delete");
             });
+        });
+        Route::controller(RecipeCollectionController::class)->group(function () {
+            Route::post("/recipeCollections/{recipeId}", "create");
+            Route::get("/recipeCollections", "get");
+            Route::delete("/recipeCollections/{recipeCollectionId}", "delete");
         });
     });
 });

@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Ingredient\IngredientCreateRequest;
 use App\Http\Requests\Ingredient\IngredientUpdateRequest;
-use App\Models\Ingredient;
-use App\Models\Recipe;
 use App\Services\IngredientService;
-use Illuminate\Http\Request;
 
 class IngredientController extends Controller
 {

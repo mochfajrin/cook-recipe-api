@@ -9,8 +9,8 @@ return new class extends Migration {
     {
         Schema::create("recipe_collections", function (Blueprint $table) {
             $table->id()->unique();
-            $table->unsignedBigInteger("user_id");
-            $table->unsignedBigInteger("recipe_id");
+            $table->unsignedBigInteger("user_id")->unique();
+            $table->unsignedBigInteger("recipe_id")->unique();
             $table->unsignedBigInteger("created_at")->default(round(microtime(true) * 1000));
 
             $table->foreign("user_id")->on("users")->references("id");

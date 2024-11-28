@@ -19,7 +19,7 @@ class InstructionController extends Controller
     {
         $response = $this->instructionService->create($recipeId, $request);
 
-        return $response;
+        return response($response, 201);
     }
     public function update(int $recipeId, InstructionUpdateRequest $request)
     {
