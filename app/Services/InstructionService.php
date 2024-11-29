@@ -23,14 +23,13 @@ class InstructionService
     }
     public function create(int $recipeId, InstructionCreateRequest $request)
     {
-        $data = $request->validated()["instructions"];
         $recipe = $this->getOneRecipe($recipeId, $request->user()->id);
         $isInstructionsExist = $recipe->instructions()->exists();
-
         if ($isInstructionsExist) {
             throw new HttpResponseException(response(["errors" => ["Instructions already exists, use patch instead"]], 400));
         }
 
+        $data = $request->validated()["instructions"];
         foreach ($data as $index => $value) {
             $image = $request->file("instructions.{$index}.image");
             if (isset($image)) {
@@ -44,7 +43,6 @@ class InstructionService
     }
     public function update(int $recipeId, InstructionUpdateRequest $request)
     {
-        $data = $request->validated()["instructions"];
         $recipe = $this->getOneRecipe($recipeId, $request->user()->id);
         $isInstructionsExist = $recipe->instructions()->exists();
 
@@ -52,6 +50,7 @@ class InstructionService
             throw new HttpResponseException(response(["errors" => ["Instructions not exists, use post instead"]], 400));
         }
 
+        $data = $request->validated()["instructions"];
         foreach ($data as $index => $value) {
             $image = $request->file("instructions.{$index}.image");
             if (isset($image)) {

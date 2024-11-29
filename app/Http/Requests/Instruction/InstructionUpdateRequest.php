@@ -16,7 +16,7 @@ class InstructionUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "instructions.*.id" => "integer|min:1|required",
+            "instructions.*.id" => "integer|min:1",
             "instructions.*.recipe_id" => "integer|min:1|required",
             "instructions.*.step" => "string|min:1|max:1000|required",
             "instructions.*.step_order" => "integer|min:1|required|unique:instructions,step_order",

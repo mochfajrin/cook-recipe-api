@@ -33,6 +33,11 @@ class IngredientService
     public function create(int $recipeId, IngredientCreateRequest $request)
     {
         $recipe = $this->isRecipeExist($recipeId, $request->user()->id);
+        $isIngredientExist = $recipe->ingredients()->exists();
+        if ($isIngredientExist) {
+            throw new HttpResponseException(response(["errors" => ["Ingredients already exists, use patch instead"]], 400));
+        }
+
         $data = $request->validated()["ingredients"];
         $ingredient = $recipe->ingredients()->createMany($data);
         return $ingredient;
@@ -40,8 +45,13 @@ class IngredientService
 
     public function update(int $recipeId, IngredientUpdateRequest $request)
     {
-        $data = $request->validated()["ingredients"];
         $recipe = $this->isRecipeExist($recipeId, $request->user()->id);
+        $isIngredientExist = $recipe->ingredients()->exists();
+        if (!$isIngredientExist) {
+            throw new HttpResponseException(response(["errors" => ["Ingredients not exists, use post instead"]], 400));
+        }
+
+        $data = $request->validated()["ingredients"];
         $recipe->ingredients()->upsert($data, "id");
         $ingredients = $recipe->ingredients()->orderBy("id", "ASC")->get(["id", "recipe_id", "name"]);
         return $ingredients;
