@@ -52,7 +52,7 @@ class RecipeService
     public function getOneRecipe(int $recipeId, int $userId): Recipe
     {
         $recipe = Recipe::where("id", $recipeId)->where("user_id", $userId)->first();
-        if (!$recipeId) {
+        if (!$recipeId || $recipe == null) {
             throw new HttpResponseException(response([
                 "errors" => ["Recipe not found"]
             ], 404));

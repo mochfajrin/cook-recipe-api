@@ -1,0 +1,499 @@
+openapi: 3.1.0
+info:
+  title: cook-recipe
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api/v1/
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+tags:
+  - name: users
+  - name: recipes
+  - name: ingredients
+  - name: instructions
+  - name: recipe-collection
+paths:
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: register
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: test123
+                password:
+                  type: string
+                  example: test123456
+                name:
+                  type: string
+                  example: test
+                email:
+                  type: string
+                  example: test@gmail.com
+                about_me:
+                  type: string
+                  example: Im a cheff
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /users/current:
+    post:
+      tags:
+        - users
+      summary: update
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: testupdate
+                password:
+                  type: string
+                  example: testupdate
+                name:
+                  type: string
+                  example: Topher-kun
+                about_me:
+                  type: string
+                  example: Im a pro cheff
+                image:
+                  type: string
+                  format: binary
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: _method
+          in: query
+          schema:
+            type: string
+          example: PATCH
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: login
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: jhon123
+                password:
+                  type: string
+                  example: test123456
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /users/logout:
+    delete:
+      tags:
+        - users
+      summary: logout
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /recipes:
+    post:
+      tags:
+        - recipes
+      summary: create
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Pecel Gurame
+                summary:
+                  type: string
+                  example: Pecel aseli gurame mas topher
+                portion:
+                  type: string
+                  example: Untuk dua orang
+                prep_time:
+                  type: string
+                  example: sekitar dua jam
+                header_image:
+                  type: string
+                  format: binary
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - recipes
+      summary: search
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /recipes/{recipeid}:
+    post:
+      parameters:
+        - in: path
+          name: recipeId
+          schema:
+            type: integer
+          required: true
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: _method
+          in: query
+          schema:
+            type: string
+          example: patch
+      tags:
+        - recipes
+      summary: update
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Pecel Gurame Edit
+                summary:
+                  type: string
+                  example: Pecel aseli gurame mas topher edit
+                portion:
+                  type: string
+                  example: "Untuk dua orang edit "
+                prep_time:
+                  type: string
+                  example: sekitar dua jam edit
+                header_image:
+                  type: string
+                  format: binary
+                is_public:
+                  type: boolean
+                  example: "true"
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /recipes/{recipeId}:
+    get:
+      tags:
+        - recipes
+      summary: get one
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - in: path
+          name: recipeId
+          schema:
+            type: integer
+          required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - recipes
+      summary: delete
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - in: path
+          name: recipeId
+          schema:
+            type: integer
+          required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /users/recipes:
+    get:
+      tags:
+        - recipes
+      summary: my-recipes
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /users/recipes/{recipeId}:
+    get:
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - in: path
+          name: recipeId
+          schema:
+            type: integer
+          required: true
+      tags:
+        - recipes
+      summary: get one private recipe
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /recipes/{recipeId}/ingredients:
+    post:
+      tags:
+        - ingredients
+      summary: update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                ingredients:
+                  - id: 3
+                    recipe_id: 1
+                    name: update
+                  - recipe_id: 1
+                    id: 4
+                    name: update
+                  - recipe_id: 1
+                    name: new recipe
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: _method
+          in: query
+          schema:
+            type: string
+          example: patch
+          parameters:
+        - in: path
+          name: recipeId
+          schema:
+            type: integer
+          required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /recipes/{recipeId}/ingredients/{ingredientId}:
+    delete:
+      tags:
+        - ingredients
+      summary: delete
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - in: path
+          name: recipeId
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: ingredientId
+          schema:
+            type: integer
+          required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /recipes/{recipeId}/instructions:
+    post:
+      tags:
+        - instructions
+      summary: update
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                instructions[0][id]:
+                  type: integer
+                  example: "2"
+                instructions[0][recipe_id]:
+                  type: integer
+                  example: "1"
+                instructions[0][step]:
+                  type: string
+                  example: test bor
+                instructions[0][step_order]:
+                  type: integer
+                  example: "2"
+                instructions[0][image]:
+                  type: string
+                  format: binary
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: _method
+          in: query
+          schema:
+            type: string
+          example: PATCH
+        - in: path
+          name: recipeId
+          schema:
+            type: integer
+          required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /recipes/{recipeId}/instructions/{instructionId}:
+    delete:
+      tags:
+        - instructions
+      summary: delete
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - in: path
+          name: recipeId
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: instructionId
+          schema:
+            type: integer
+          required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /recipeCollections:
+    get:
+      tags:
+        - recipe-collection
+      summary: get
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /recipeCollections/{collectionId}:
+    post:
+      tags:
+        - recipe-collection
+      summary: create
+      requestBody:
+        content: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - in: path
+          name: collectionId
+          schema:
+            type: integer
+          required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
