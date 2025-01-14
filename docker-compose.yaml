@@ -3,11 +3,11 @@ networks:
     driver: bridge
 services:
   app:
-    container_name: laravel_blog
-    image: laravel-blog
+    container_name: cook-api
+    image: mochfajrin/cook-api
     working_dir: /var/www
     build:
-      context: ./infra/app
+      context: ./
       dockerfile: Dockerfile
     restart: unless-stopped
     tty: true
@@ -16,13 +16,13 @@ services:
     networks:
       - app-network
   db:
-    container_name: pgsql
-    image: postgres:16
+    container_name: cook-api-db
+    image: postgres:16.6
     restart: unless-stopped
     expose:
       - "5432"
     ports:
-      - "5433:5432"
+      - "5434:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
@@ -32,12 +32,12 @@ services:
     networks:
       - app-network
   nginx:
-    image: nginx:1.27.3-alpine
-    container_name: nginx
+    container_name: cook-api-webserver
+    image: nginx:1.27.3
     restart: unless-stopped
     tty: true
     ports:
-      - 8100:80
+      - 3006:80
     volumes:
       - ./:/var/www
       - ./infra/nginx/conf:/etc/nginx/conf.d
